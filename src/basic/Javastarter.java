@@ -1,3 +1,5 @@
+package basic;
+
 public class Javastarter {
     public static void main(String[] args) {
                 // 인텔리제이 출력 함수 생성: sout
