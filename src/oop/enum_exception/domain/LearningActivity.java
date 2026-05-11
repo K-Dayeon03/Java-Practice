@@ -1,7 +1,5 @@
 package oop.enum_exception.domain;
 
-import oop.enum_exception.Visibility;
-
 public abstract class LearningActivity {
 
     private  static int totalCreateCount = 0;
@@ -10,17 +8,18 @@ public abstract class LearningActivity {
     private String title;
     private int minutes;
     private Visibility visibility;
+    private final ActivityCategory category;
+//    LearningActivity(String title, int minutes){
+//        this(title, minutes, Visibility.PUBLIC);
+//    }
 
-    LearningActivity(String title, int minutes){
-        this(title, minutes, Visibility.PUBLIC);
-    }
-
-    LearningActivity(String title, int minutes, Visibility visibility){
+    LearningActivity(String title, int minutes, Visibility visibility, ActivityCategory category){
         totalCreateCount++;
         this.id = totalCreateCount;
         this.title = normalizeTitle(title); //method 재활용
         this.minutes = minutes;
         this.visibility = visibility;
+        this.category = category;
     }
 
     public void extendStudy(int minutes){
@@ -80,5 +79,9 @@ public abstract class LearningActivity {
 
     public boolean isPublicActivity(){
         return visibility == Visibility.PUBLIC;
+    }
+
+    public ActivityCategory getCategory() {
+        return category;
     }
 }

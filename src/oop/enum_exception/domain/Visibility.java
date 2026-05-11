@@ -1,4 +1,4 @@
-package oop.enum_exception;
+package oop.enum_exception.domain;
 //enum: 정해진 선택지를 코드의 타입으로 만드는 문법
 //enum도 하나의 클래스
 public enum Visibility {

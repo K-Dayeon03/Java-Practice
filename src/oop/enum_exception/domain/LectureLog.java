@@ -1,6 +1,5 @@
 package oop.enum_exception.domain;
 
-import oop.enum_exception.Visibility;
 import oop.enum_exception.policy.Reviewable;
 import oop.enum_exception.policy.Shareable;
 
@@ -11,7 +10,7 @@ public class LectureLog extends LearningActivity implements Reviewable, Shareabl
     public LectureLog(String title, int minutes, Visibility visibility, String instructorName){
         //상속 관계 하에서 자식 객체가 생성될 대 부모의 객체도 함께 생성됩니다.(그래야 필드, 메서드를 물려줄 수 있으니까)
         //그래서 생성자에는 항상 super()가 내장되어 있습니다.
-        super(title, minutes, visibility);
+        super(title, minutes, visibility,ActivityCategory.LECTURE );
         this.instructorName = normalizeInstructorName(instructorName); //유효성 검증을 자식이 스스로 해야한다.
     }
 
@@ -35,7 +34,7 @@ public class LectureLog extends LearningActivity implements Reviewable, Shareabl
 
     @Override
     public boolean needsReview() {
-        return getMinutes() < 60;
+        return getCategory().isShortStudy( getMinutes(  ));
     }
 
     @Override

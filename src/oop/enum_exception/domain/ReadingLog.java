@@ -1,6 +1,5 @@
 package oop.enum_exception.domain;
 
-import oop.enum_exception.Visibility;
 import oop.enum_exception.policy.Reviewable;
 import oop.enum_exception.policy.Shareable;
 
@@ -8,7 +7,7 @@ public class ReadingLog extends LearningActivity implements Reviewable, Shareabl
     private String bookTitle;
 
     public ReadingLog(String title, int minutes, Visibility visibility, String bookTitle) {
-        super(title, minutes, visibility);
+        super(title, minutes, visibility, ActivityCategory.READING);
         this.bookTitle = bookTitle;
     }
 
@@ -18,7 +17,7 @@ public class ReadingLog extends LearningActivity implements Reviewable, Shareabl
     }
     @Override
     public boolean needsReview() {
-        return getMinutes() < 45;
+        return getCategory().isShortStudy( getMinutes(  ));
     }
 
     @Override

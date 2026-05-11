@@ -1,49 +1,39 @@
 package oop.enum_exception.app;
 
-import oop.enum_exception.Visibility;
-import oop.enum_exception.domain.LearningActivity;
-import oop.enum_exception.domain.LectureLog;
-import oop.enum_exception.domain.PracticeLog;
-import oop.enum_exception.domain.ReadingLog;
-import oop.enum_exception.policy.Reviewable;
-import oop.enum_exception.policy.Shareable;
+import oop.enum_exception.domain.*;
 import oop.enum_exception.printer.ActivityPrinter;
-import oop.enum_exception.printer.CompactActivityPrinter;
+import oop.enum_exception.printer.ConsoleActivityPrinter;
 
 public class SprintLogApp {
     public static void main(String[] args) {
-        LectureLog javaLecture = new LectureLog("Java 객체지향", 50, Visibility.PUBLIC, "박코치");
-        PracticeLog gitPractice = new PracticeLog("Git 브랜치 실습", 70, Visibility.PUBLIC, 80);
-        PracticeLog oopPractice = new PracticeLog("캡슐화 리팩터링", 40, Visibility.PRIVATE, 45);
-        ReadingLog oopBook = new ReadingLog("객체지향의 사실과 오해", 35, Visibility.PUBLIC, "객체지향의 사실과 오해");
+        // ── 1. 기본 활동 목록 ──────────────────────────────────────────
+        // boolean 대신 Visibility enum으로 공개 상태를 표현한다.
+        LearningActivity[] activities = {
+                new LectureLog("Java enum 기초", 50, Visibility.PUBLIC, "박코치"),
+                new PracticeLog("예외 처리 실습", 80, Visibility.PUBLIC, 90),
+                new ReadingLog("객체지향의 사실과 오해", 35, Visibility.PRIVATE, "조영호")
+        };
 
-        //추상 클래스는 스스로의 객체를 생성할 수 없고, 자식에 의해서 생성될 뿐입니다.
-        //LearningActivity act = new LearningActivity("test",10);
-        LearningActivity[] activities = {javaLecture, gitPractice, oopPractice, oopBook};
-
-        ActivityPrinter printer = new CompactActivityPrinter(); //인터페이스를 적용해서 간단한 출력함
-        System.out.println("=== 간단 학 활동 목록 ===");
-        for (int i = 0; i < activities.length; i++) {
-            printer.print(activities[i]);
+        ActivityPrinter printer = new ConsoleActivityPrinter();
+        System.out.println("=== 학습 활동 목록 ===");
+        for (LearningActivity activity : activities) {
+            printer.print(activity);
         }
-        //다형성이란 부모 타입의 변수에 자식 타입의 객체가 들어올 수 있다는 것, 곧 상속 관계 하에서만 발생한다.
-        //인터페이스 구현 관계도 다형성 발생이 가능합니다.
 
-        Reviewable[] reviewables = {javaLecture, gitPractice, oopPractice, oopBook};
+        // ── 2. enum 기본 메서드 시연 ───────────────────────────────────
         System.out.println();
-        System.out.println("==== 복습 필요 활동 ====");
-        for(Reviewable reviewable : reviewables){
-            if(reviewable.needsReview()){
-                reviewable.printReviewTarget();
-            }
-        }
-        Shareable[] shareables = {javaLecture, gitPractice, oopPractice, oopBook};
-        System.out.println();
-        System.out.println("==== 공유 가능한 활동 ====");
-        for(Shareable shareable : shareables){
-            if(shareable.canShare()){
-                System.out.println(shareable.getShareTitle());
-            }
+        System.out.println("=== enum 기본 정보 ===");
+        System.out.println("name():    " + ActivityCategory.LECTURE.name());
+        System.out.println("ordinal(): " + ActivityCategory.LECTURE.ordinal());
+        System.out.println("label:     " + ActivityCategory.LECTURE.getLabel());
+        printCategoryGuide(ActivityCategory.PRACTICE);
+    }
+    /** switch 문 + enum 조합 시연. */
+    private static void printCategoryGuide(ActivityCategory category) {
+        switch (category) {
+            case LECTURE  -> System.out.println("강의: 핵심 개념을 놓치지 않았는지 확인합니다.");
+            case PRACTICE -> System.out.println("실습: 직접 손으로 흐름을 만들어보는 것이 중요합니다.");
+            case READING  -> System.out.println("독서: 짧게 읽어도 정리 품질이 중요합니다.");
         }
     }
 }

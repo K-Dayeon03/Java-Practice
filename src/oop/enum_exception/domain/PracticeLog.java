@@ -1,6 +1,5 @@
 package oop.enum_exception.domain;
 
-import oop.enum_exception.Visibility;
 import oop.enum_exception.policy.Reviewable;
 import oop.enum_exception.policy.Shareable;
 
@@ -8,14 +7,14 @@ import oop.enum_exception.policy.Shareable;
 public class PracticeLog extends LearningActivity implements Reviewable, Shareable {
     private int completionRate; //practiceLog만 가지는 고유한 필드
     public PracticeLog(String title, int minutes, Visibility visibility, int completionRate) {
-        super(title, minutes, Visibility.PUBLIC);
+        super(title, minutes, Visibility.PUBLIC, ActivityCategory.PRACTICE);
         this.completionRate = normalizeCompletionRate(completionRate);
     }
 
 
     @Override
     public boolean needsReview() {
-        return getMinutes() < 60|| completionRate < 70;
+        return  getCategory().isShortStudy( getMinutes(  )) || completionRate < 70;
     }
 
     @Override
