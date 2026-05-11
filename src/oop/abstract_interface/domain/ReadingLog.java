@@ -12,19 +12,22 @@ public class ReadingLog extends LearningActivity implements Reviewable, Shareabl
     }
 
     @Override
-    public void printSummary() {
-        System.out.println("[독서] #" + getId() + " " + getTitle() + " - " + getMinutes()
-                + "분 - 책: " + bookTitle);
+    public void printReviewTarget() {
+        System.out.println("[복습 권장]" + getTitle() + "("+bookTitle+")");
     }
-
     @Override
     public boolean needsReview() {
         return getMinutes() < 45;
     }
 
     @Override
-    public void printReviewTarget() {
-        printSummary();
+    public String getActivityType() {
+        return "독서";
+    }
+
+    @Override
+    public String getDetailText() {
+        return "책 제목 : "+" "+ bookTitle;
     }
 
     @Override

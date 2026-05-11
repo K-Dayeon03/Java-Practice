@@ -21,10 +21,15 @@ public class LectureLog extends LearningActivity implements Reviewable, Shareabl
     * 2. 리턴 타입이 같아야한다.
     * 3. 매개 변수의 선언이 일치해야하낟.
     * */
+
     @Override
-    public void printSummary() {
-        System.out.println("[강의] #" + getId() + " " + getTitle() + " - " + getMinutes()
-                + "분 - 강사: " + instructorName);
+    public String getActivityType() {
+        return "강의";
+    }
+
+    @Override
+    public String getDetailText() {
+        return "강사: " + instructorName;
     }
 
     @Override
@@ -34,7 +39,7 @@ public class LectureLog extends LearningActivity implements Reviewable, Shareabl
 
     @Override
     public void printReviewTarget() {
-        printSummary();
+        System.out.println("[복습 권장]" + getTitle() + "("+getMinutes()+"분)");
     }
 
     private String normalizeInstructorName(String instructorName){
