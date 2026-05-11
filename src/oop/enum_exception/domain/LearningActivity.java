@@ -1,5 +1,7 @@
 package oop.enum_exception.domain;
 
+import oop.enum_exception.exception.InvalidActivityException;
+
 public abstract class LearningActivity {
 
     private  static int totalCreateCount = 0;
@@ -14,30 +16,42 @@ public abstract class LearningActivity {
 //    }
 
     LearningActivity(String title, int minutes, Visibility visibility, ActivityCategory category){
+        validateTitle(title);
+        validateMinutes(minutes);
         totalCreateCount++;
         this.id = totalCreateCount;
-        this.title = normalizeTitle(title); //method 재활용
+        this.title = title.trim();//좌우공백 제거
         this.minutes = minutes;
         this.visibility = visibility;
         this.category = category;
     }
 
-    public void extendStudy(int minutes){
-        if(minutes <= 0){
-            System.out.println("잘못된 공부 시간입니다.");
-            return; //void 메서드에서 return은 메서드를 강제 종료합니다.
+    public static int getTotalCreatedCount() {
+        return totalCreateCount;
+    }
+
+    public void extendStudy(int additionalMinutes){
+        if(additionalMinutes <= 0){
+            throw  new InvalidActivityException(
+                    "추가 학습 시간은 1분 이상이어야 합니다. 입력값: " + additionalMinutes);
         }
-        this.minutes += minutes;
+        this.minutes += additionalMinutes;
     }
     
     public void changeTitle(String newTitle){
-        this.title = normalizeTitle(newTitle);
+        validateTitle(newTitle);
+        this.title = newTitle;
     }
-    private String normalizeTitle(String newTitle) {
-        if(newTitle == null || newTitle.isBlank()){
-            return "제목 없음";
+    private void validateMinutes(int newMinutes){
+        if(newMinutes <= 0){
+            throw new InvalidActivityException("학습 시간은 1분 이상이여야 합니다. 입력값: " + newMinutes);
         }
-        return newTitle;
+    }
+
+    private void validateTitle(String newTitle) {
+        if(newTitle == null || newTitle.isBlank()){
+            throw new InvalidActivityException("학습 제목은 비워둘 수 없습니다.");
+        }
     }
 
     public void openToPublic(){
