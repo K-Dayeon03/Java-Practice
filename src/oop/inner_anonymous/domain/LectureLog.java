@@ -1,0 +1,65 @@
+package oop.inner_anonymous.domain;
+
+import oop.inner_anonymous.policy.Reviewable;
+import oop.inner_anonymous.policy.Shareable;
+
+//LectureLog는 LearningActivity의 한종류이고, Reviewable에 선언된 역할도 수행된다.
+public class LectureLog extends LearningActivity implements Reviewable, Shareable {
+
+    private String instructorName; //강사 이름 (LectureLog)만 가지는 고유한 필드)
+    public LectureLog(String title, int minutes, Visibility visibility, String instructorName){
+        //상속 관계 하에서 자식 객체가 생성될 대 부모의 객체도 함께 생성됩니다.(그래야 필드, 메서드를 물려줄 수 있으니까)
+        //그래서 생성자에는 항상 super()가 내장되어 있습니다.
+        super(title, minutes, visibility, ActivityCategory.LECTURE );
+        this.instructorName = normalizeInstructorName(instructorName); //유효성 검증을 자식이 스스로 해야한다.
+    }
+
+    //메서드 재정의(override)
+    //부모가 물려준 메서드가 자식에게 맞지 않거나 부족할 경우 자식이 재 정의해서 사용할 수 있습니다.
+    /* 오버라이딩 규칙
+    * 1. 메서드 이름이 같아야한다.
+    * 2. 리턴 타입이 같아야한다.
+    * 3. 매개 변수의 선언이 일치해야하낟.
+    * */
+
+    @Override
+    public String getActivityType() {
+        return "강의";
+    }
+
+    @Override
+    public String getDetailText() {
+        return "강사: " + instructorName;
+    }
+
+    @Override
+    public boolean needsReview() {
+        return getCategory().isShortStudy( getMinutes(  ));
+    }
+
+    @Override
+    public void printReviewTarget() {
+        System.out.println("[복습 권장]" + getTitle() + "("+getMinutes()+"분)");
+    }
+
+    private String normalizeInstructorName(String instructorName){
+        if(instructorName == null || instructorName.isBlank()){
+            return "강사 미정";
+        }
+        return instructorName;
+    }
+
+    public void method1() {
+        System.out.println("자식의 고유 객체 호출");
+    }
+
+    @Override
+    public boolean canShare() {
+        return ispublicActivity();
+    }
+
+    @Override
+    public String getShareTitle() {
+        return getTitle();
+    }
+}
